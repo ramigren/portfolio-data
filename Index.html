@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramiro Grenon · Data Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg:#0d0f14; --surface:#141720; --border:#1e2330; --muted:#3a4060;
+      --text:#c8cfe8; --text-dim:#6b7594;
+      --accent:#4f8ef7; --accent2:#7c5ff5;
+      --ok:#3ecf8e; --warn:#f5a623; --error:#e05d5d;
+      --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+    nav{position:sticky;top:0;z-index:99;background:rgba(13,15,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    nav .wrap{display:flex;align-items:center;justify-content:space-between;height:52px}
+    .nav-brand{font-family:var(--mono);font-size:13px;color:var(--text-dim)}
+    .nav-brand span{color:var(--accent)}
+    .nav-links{display:flex;gap:28px}
+    .nav-links a{font-size:13px;color:var(--text-dim);transition:color .15s}
+    .nav-links a:hover{color:var(--text);text-decoration:none}
+
+    .hero{padding:72px 0 54px;border-bottom:1px solid var(--border)}
+    .hero-grid{display:grid;grid-template-columns:1fr 190px;gap:40px;align-items:center}
+    .hero-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+    .hero h1{font-size:clamp(26px,4vw,38px);font-weight:600;line-height:1.15;letter-spacing:-.02em;color:#e8ecf8;margin-bottom:16px}
+    .hero h1 em{font-style:normal;background:linear-gradient(95deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:15px;color:var(--text-dim);max-width:620px;margin-bottom:28px;line-height:1.7}
+    .hero-links{display:flex;gap:10px;flex-wrap:wrap}
+    .profile-img{width:170px;height:170px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block}
+
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;transition:opacity .15s;cursor:pointer;border:none;text-decoration:none}
+    .btn:hover{opacity:.8;text-decoration:none}
+    .btn-cv{background:var(--ok);color:#0d0f14;font-weight:600}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .btn-card{background:#1b202e;border:1px solid var(--border);color:var(--accent);width:100%;justify-content:center;margin-top:14px;font-family:var(--mono);font-size:12px;padding:9px;border-radius:6px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:6px}
+    .btn-card:hover{background:var(--border)}
+
+    .stack-bar{padding:22px 0;border-bottom:1px solid var(--border)}
+    .stack-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+    .stack-pills{display:flex;flex-wrap:wrap;gap:6px}
+    .pill{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:4px;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);display:inline-flex;align-items:center;gap:5px}
+    .pill.hl{border-color:var(--accent);color:var(--accent)}
+    .pill i{font-size:10px}
+
+    section{padding:54px 0;border-bottom:1px solid var(--border)}
+    .section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .section-title{font-size:20px;font-weight:600;color:#e8ecf8;margin-bottom:32px}
+
+    .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .project-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .2s}
+    .project-card:hover{border-color:var(--muted)}
+    .project-card-top h3{font-size:14px;font-weight:600;color:#e8ecf8;margin-bottom:5px;line-height:1.4}
+    .project-card-meta{font-size:11px;color:var(--text-dim);font-family:var(--mono);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .project-card-desc{font-size:13px;color:var(--text-dim);margin-bottom:14px;line-height:1.6}
+    .project-badge{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;margin-bottom:10px}
+    .badge-prod{background:rgba(62,207,142,.1);color:var(--ok);border:1px solid rgba(62,207,142,.25)}
+    .badge-learn{background:rgba(245,166,35,.1);color:var(--warn);border:1px solid rgba(245,166,35,.25)}
+    .badge-academic{background:rgba(79,142,247,.1);color:var(--accent);border:1px solid rgba(79,142,247,.25)}
+    .project-tech{display:flex;flex-wrap:wrap;gap:4px}
+    .tag{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;background:var(--bg);border:1px solid var(--border);color:var(--text-dim)}
+
+    .dashboard-modal{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0;max-width:1040px;width:92%;max-height:90vh;margin:auto;box-shadow:0 24px 48px rgba(0,0,0,.7)}
+    .dashboard-modal::backdrop{background:rgba(13,15,20,.88);backdrop-filter:blur(6px)}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border);background:#11141d;border-radius:10px 10px 0 0}
+    .modal-header h3{font-size:15px;color:#fff;font-weight:600}
+    .btn-close{background:transparent;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;line-height:1;padding:2px 6px;border-radius:4px}
+    .btn-close:hover{color:var(--error);background:rgba(224,93,93,.1)}
+    .modal-body{padding:24px;overflow-y:auto;max-height:calc(90vh - 56px);display:grid;grid-template-columns:1fr 1.3fr;gap:24px}
+
+    .psi{display:flex;flex-direction:column;gap:16px}
+    .psi-row{display:flex;flex-direction:column;gap:5px}
+    .psi-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:bold}
+    .psi-label.p{color:var(--error)}.psi-label.s{color:var(--accent)}.psi-label.i{color:var(--ok)}
+    .psi-text{font-size:13.5px;color:var(--text);line-height:1.6}
+    .modal-visual{display:flex;flex-direction:column;gap:12px}
+
+    .code-ide{background:#090b10;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .ide-header{background:#11141d;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-dim)}
+    .ide-dots{display:flex;gap:5px;align-items:center}
+    .ide-dot{width:10px;height:10px;border-radius:50%}
+    .ide-body{padding:14px;margin:0;font-family:var(--mono);font-size:11px;overflow-x:auto;color:#a9b2c3;line-height:1.55;white-space:pre-wrap}
+    .c-kw{color:#ff79c6}.c-fn{color:#50fa7b}.c-st{color:#f1fa8c}.c-cm{color:#6272a4}
+
+    .mock-dashboard{background:#090b10;border:1px solid var(--border);border-radius:6px;padding:16px}
+    .mock-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px}
+    .mock-title{font-size:12px;text-transform:uppercase;font-family:var(--mono);color:var(--text);letter-spacing:.05em}
+    .mock-badge{background:rgba(62,207,142,.1);color:var(--ok);font-size:10px;padding:2px 6px;border-radius:4px;font-family:var(--mono);border:1px solid rgba(62,207,142,.2)}
+    .mock-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .mock-kpi-card{background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:4px}
+    .mock-kpi-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;font-family:var(--mono);margin-bottom:4px;display:block}
+    .mock-kpi-val{font-size:15px;font-weight:600;color:#fff;font-family:var(--mono)}
+    .mock-chart-container{background:var(--surface);border:1px solid var(--border);padding:12px;border-radius:4px;margin-bottom:14px}
+    .mock-chart-title{font-size:11px;color:var(--text-dim);margin-bottom:12px;font-family:var(--mono)}
+    .mock-bars{display:flex;justify-content:space-around;align-items:flex-end;height:70px;border-bottom:1px solid var(--border)}
+    .mock-bar-wrapper{display:flex;flex-direction:column;align-items:center;width:14%}
+    .mock-bar{width:100%;background:linear-gradient(to top,var(--accent2),var(--accent));border-radius:2px 2px 0 0;min-height:4px;position:relative}
+    .mock-bar:hover::after{content:attr(data-val);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-family:var(--mono);color:#fff;background:var(--bg);padding:1px 4px;border-radius:2px;border:1px solid var(--border);white-space:nowrap}
+    .mock-bar-label{font-size:9px;font-family:var(--mono);color:var(--text-dim);margin-top:4px}
+    .mock-table-container{overflow-x:auto}
+    .mock-table{width:100%;border-collapse:collapse;font-size:11.5px;font-family:var(--mono)}
+    .mock-table th{color:var(--text-dim);font-weight:normal;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;text-align:left}
+    .mock-table td{padding:7px 8px;border-bottom:1px solid rgba(30,35,48,.5);color:var(--text)}
+    .t-num{text-align:right}
+
+    .af-dashboard{background:#0b0e14;border:1px solid #1e2538;border-radius:8px;padding:16px;color:#e2e8f0}
+    .af-banner{background:linear-gradient(90deg,#1e293b,#0f172a);border:1px solid #334155;padding:10px 14px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .af-banner-title{font-size:12px;font-weight:700;color:#fff;letter-spacing:.04em;text-transform:uppercase}
+    .af-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+    .af-kpi{background:#151c2c;border:1px solid #222f48;border-radius:4px;padding:8px;text-align:center}
+    .af-kpi-lbl{font-size:9px;color:#94a3b8;font-family:var(--mono);text-transform:uppercase;margin-bottom:2px}
+    .af-kpi-val{font-size:14px;font-weight:700;color:#3ecf8e;font-family:var(--mono)}
+    .af-kpi-val.alt{color:#3b82f6}
+    .af-body-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+    .af-box{background:#111726;border:1px solid #222f48;border-radius:6px;padding:12px}
+    .af-box-title{font-size:10px;font-family:var(--mono);color:#94a3b8;margin-bottom:10px;text-transform:uppercase;border-bottom:1px solid #222f48;padding-bottom:4px}
+    .af-hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;font-family:var(--mono)}
+    .af-hbar-lbl{width:75px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .af-hbar-track{flex-grow:1;height:14px;background:#1e293b;border-radius:2px;overflow:hidden}
+    .af-hbar-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:2px}
+    .af-hbar-val{font-size:10px;color:#fff;width:50px;text-align:right}
+    .af-trend-lines{display:flex;justify-content:space-between;align-items:flex-end;height:80px;padding:10px 10px 0;border-left:1px solid #334155;border-bottom:1px solid #334155}
+    .af-trend-dot-wrap{display:flex;flex-direction:column;align-items:center;width:14%}
+    .af-trend-line-bar{width:4px;background:rgba(59,130,246,.3);border-radius:2px 2px 0 0;position:relative}
+    .af-trend-line-bar::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#60a5fa;border:2px solid #0b0e14;border-radius:50%}
+    .af-trend-lbl{font-size:8px;font-family:var(--mono);color:#64748b;margin-top:4px}
+
+    .crm-dashboard{background:#0a1128;border:1px solid #1a365d;border-radius:8px;padding:16px;color:#e2e8f0}
+    .crm-topbar{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1e3a8a;padding-bottom:8px;margin-bottom:14px}
+    .crm-header-txt h4{font-size:13px;font-weight:700;color:#fff}
+    .crm-header-txt p{font-size:9px;color:#60a5fa;font-family:var(--mono)}
+    .crm-badge{background:#1e3a8a;border:1px solid #3b82f6;color:#93c5fd;font-size:9px;padding:1px 6px;border-radius:3px;font-family:var(--mono)}
+    .crm-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+    .crm-card{background:#111a36;border:1px solid #1e3a8a;border-radius:6px;padding:10px;border-top:3px solid #3b82f6}
+    .crm-card.fail{border-top-color:#ef4444}
+    .crm-card-lbl{font-size:9px;color:#93c5fd;font-family:var(--mono);text-transform:uppercase;margin-bottom:2px}
+    .crm-card-val{font-size:16px;font-weight:700;color:#fff;font-family:var(--mono)}
+    .crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .crm-panel{background:#0f172a;border:1px solid #1e3a8a;border-radius:6px;padding:12px}
+    .crm-panel-title{font-size:10px;font-family:var(--mono);color:#93c5fd;margin-bottom:10px;text-transform:uppercase}
+    .crm-vbar-container{display:flex;justify-content:space-around;align-items:flex-end;height:90px;border-bottom:1px solid #1e3a8a;padding-bottom:4px}
+    .crm-vbar-wrapper{display:flex;flex-direction:column;align-items:center;width:22%}
+    .crm-vbar{width:100%;background:linear-gradient(to top,#2563eb,#60a5fa);border-radius:3px 3px 0 0;position:relative;min-height:4px;text-align:center}
+    .crm-vbar-inner-lbl{position:absolute;top:-14px;width:100%;font-size:9px;font-family:var(--mono);color:#fff}
+    .crm-vbar-lbl{font-size:9px;color:#94a3b8;margin-top:4px;text-align:center}
+    .crm-list-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(30,58,138,.4);font-size:11px;font-family:var(--mono)}
+    .crm-list-item:last-child{border-bottom:none}
+    .crm-list-name{color:#e2e8f0}.crm-list-count{color:#f5a623;font-weight:bold}
+
+    .ga-dashboard{background:#0f111a;border:1px solid var(--border);border-radius:8px;padding:16px}
+    .ga-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937;padding-bottom:12px;margin-bottom:16px}
+    .ga-brand{display:flex;align-items:center;gap:8px}
+    .ga-icon{background:#f5a623;color:#0d0f14;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:13px}
+    .ga-title{font-size:14px;font-weight:700;color:#fff}
+    .ga-subtitle{font-size:10px;color:#9ca3af;font-family:var(--mono)}
+    .ga-refresh{font-size:11px;color:#9ca3af;display:flex;align-items:center;gap:6px}
+    .ga-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+    .ga-card{background:#1f2937;border-radius:6px;padding:12px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid var(--border)}
+    .ga-card.c-high{border-left-color:#ef4444}.ga-card.c-med{border-left-color:#f5a623}.ga-card.c-low{border-left-color:#10b981}
+    .ga-card-num{font-size:18px;font-weight:700;color:#fff;font-family:var(--mono)}
+    .ga-card-lbl{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em}
+    .ga-table-box{border:1px solid #1f2937;border-radius:6px;overflow:hidden;background:#111827}
+    .ga-table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+    .ga-table th{background:#1f2937;color:#9ca3af;padding:8px 12px;font-weight:600;font-size:11px}
+    .ga-table td{padding:10px 12px;border-bottom:1px solid #1f2937}
+    .ga-table tr:last-child td{border-bottom:none}
+    .ga-table tr:hover td{background:rgba(31,41,55,.4)}
+    .badge-high{background:rgba(239,68,68,.2);color:#f87171;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500}
+    .badge-med{background:rgba(245,166,35,.2);color:#fbbf24;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500}
+    .ga-mono-lbl{font-family:var(--mono);font-size:11px;color:#fbbf24}
+    .ga-mono-lbl.high{color:#f87171}
+    .ga-text-muted{color:#9ca3af;font-size:11.5px;line-height:1.4}
+
+    .about-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .about-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px}
+    .about-block-icon{font-size:18px;margin-bottom:10px;color:var(--accent)}
+    .about-block h4{font-size:13px;font-weight:600;color:#e8ecf8;margin-bottom:6px}
+    .about-block p{font-size:13px;color:var(--text-dim);line-height:1.65}
+
+    footer{padding:36px 0;text-align:center;border-top:1px solid var(--border)}
+    footer .contact-links{display:flex;justify-content:center;gap:20px;margin-bottom:12px;flex-wrap:wrap}
+    footer .contact-links a{font-size:13px;color:var(--text-dim);display:inline-flex;align-items:center;gap:5px}
+    footer .contact-links a:hover{color:var(--text);text-decoration:none}
+    footer p{font-size:12px;color:var(--text-dim)}
+
+    @media(max-width:768px){
+      .hero-grid,.projects-grid,.about-grid{grid-template-columns:1fr}
+      .modal-body{grid-template-columns:1fr}
+      .nav-links{display:none}
+      .hero-grid{text-align:center;justify-items:center}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="nav-brand"><span>rg</span> · data analyst</span>
+    <div class="nav-links">
+      <a href="#proyectos">Proyectos</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="mailto:grenonramiro@gmail.com">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-label">Ramiro Grenon · Córdoba, Argentina</p>
+        <h1>Datos que explican.<br><em>Decisiones que cuentan.</em></h1>
+        <p class="hero-sub">
+          Contador Público y Data Analyst con más de 4 años convirtiendo datos complejos en decisiones concretas.
+          Automatización de reportes, Business Intelligence aplicado a finanzas y operaciones, y gestión de producto digital.
+        </p>
+        <div class="hero-links">
+          <a class="btn btn-cv" href="CV_RamiroGrenon.pdf" download>
+            <i class="fa-solid fa-download"></i> Descargar CV
+          </a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/ramirogrenon" target="_blank">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/ramigren" target="_blank">
+            <i class="fa-brands fa-github"></i> GitHub
+          </a>
+          <a class="btn btn-ghost" href="mailto:grenonramiro@gmail.com">
+            <i class="fa-solid fa-envelope"></i> Email
+          </a>
+        </div>
+      </div>
+      <div>
+        <img src="1729900810850_2.jpg" alt="Ramiro Grenon" class="profile-img" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stack-bar">
+  <div class="wrap">
+    <p class="stack-label">Stack</p>
+    <div class="stack-pills">
+      <span class="pill hl"><i class="fa-solid fa-chart-bar"></i> Power BI</span>
+      <span class="pill hl"><i class="fa-solid fa-database"></i> SQL · Oracle / SQL Server</span>
+      <span class="pill hl"><i class="fa-brands fa-python"></i> Python · Pandas / PySpark</span>
+      <span class="pill hl"><i class="fa-solid fa-cloud"></i> Azure Databricks</span>
+      <span class="pill hl">DAX · Power Query</span>
+      <span class="pill">Microsoft Dataverse</span>
+      <span class="pill">Scikit-learn</span>
+      <span class="pill">Gemini API</span>
+      <span class="pill">BigQuery</span>
+      <span class="pill">Selenium</span>
+      <span class="pill">Jira</span>
+    </div>
+  </div>
+</div>
+
+<section id="proyectos">
+  <div class="wrap">
+    <p class="section-eyebrow">Proyectos</p>
+    <p class="section-title">Casos reales de negocio</p>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-prod">Producción</span>
+          <h3>Automatización de pagos — Acuerdo Federal de Deuda</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-cloud"></i> Azure Databricks · Rentas Córdoba</div>
+          <p class="project-card-desc">Rentas Córdoba cobra deuda municipal en nombre de los municipios y distribuye los fondos a los entes acreedores (EPEC, Ministerio de Educación, etc.). Automaticé ese proceso mensual completo: detección de pagos nuevos, generación del reporte y envío automático a cada organismo.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">PySpark</span><span class="tag">SQL</span><span class="tag">Delta Lake</span><span class="tag">Python</span><span class="tag">SMTP</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p1').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-prod">Producción</span>
+          <h3>Dashboard de control — Convenio de deuda municipal</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-chart-pie"></i> Power BI · Rentas Córdoba</div>
+          <p class="project-card-desc">La Dirección necesitaba ver en un solo lugar la deuda encomendada por municipio, los pagos acreditados y lo distribuido. Armé el tablero de control que usaban diariamente para monitorear cobrabilidad.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Oracle SQL</span><span class="tag">Modelado estrella</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p2').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-prod">Producción</span>
+          <h3>Monitor de deuda — Acuerdo Federal de Coparticipación</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-landmark"></i> Secretaría de Ingresos Públicos</div>
+          <p class="project-card-desc">Seguimiento de planes de pago, cuotas acreditadas vs. pendientes, amortización CER y distribución por acreencia para 170+ municipios. Alertas automáticas por desvíos de cobrabilidad.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">DAX avanzado</span><span class="tag">Power BI</span><span class="tag">Control de gestión</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p3').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-prod">Producción</span>
+          <h3>Dashboard de SLAs — Migración Planner a Dynamics 365</h3>
+          <div class="project-card-meta"><i class="fa-brands fa-microsoft"></i> Power BI · Dataverse · Kolektor UT</div>
+          <p class="project-card-desc">Al migrar de Planner a Dynamics 365 se perdió la comparabilidad histórica de KPIs. Diseñé un modelo unificado que integró el histórico con la operación actual y expuso el cumplimiento real de SLAs.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">Dataverse</span><span class="tag">Power Query</span><span class="tag">DAX</span><span class="tag">Dynamics 365</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p4').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-prod">Producción</span>
+          <h3>Informe oficial de Monotributo — Ministerio de Economía</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-file-lines"></i> Ministerio de Economía · Publicación mensual</div>
+          <p class="project-card-desc">Diseñé y mantuve el dataset oficial con monotributistas por localidad, cobrabilidad y adhesión al MUC para 2018–2024. Se publica mensualmente en el sitio del Ministerio y lo usan municipios de toda la Provincia.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">SQL</span><span class="tag">Modelado de datos</span><span class="tag">Análisis tributario</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p5').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-academic">Académico</span>
+          <h3>Modelo predictivo de conversión de leads</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-graduation-cap"></i> Trabajo final · Diplomatura UNC 2024</div>
+          <p class="project-card-desc">Pipeline de clasificación con Random Forest para priorizar leads por propensión a convertir: limpieza, feature engineering, balanceo de clases y scoring por decil.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Random Forest</span><span class="tag">Pandas</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p6').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-learn">Exploración</span>
+          <h3>Clasificación de reseñas con IA generativa</h3>
+          <div class="project-card-meta"><i class="fa-solid fa-robot"></i> Python · Gemini / Groq · BigQuery</div>
+          <p class="project-card-desc">Pipeline para clasificar ~2.900 reseñas de restaurantes: sentimiento, temas y alertas críticas en JSON estructurado. Cargado en BigQuery y visualizado en Looker Studio.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">Gemini API</span><span class="tag">Groq</span><span class="tag">BigQuery</span><span class="tag">Looker Studio</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p7').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-top">
+          <span class="project-badge badge-learn">Exploración</span>
+          <h3>Bot de búsqueda laboral con Python</h3>
+          <div class="project-card-meta"><i class="fa-brands fa-python"></i> Selenium · Telegram API</div>
+          <p class="project-card-desc">Script que scrapea portales ATS, filtra por keywords y manda alertas diarias a Telegram. Un problema propio resuelto con las mismas herramientas que uso en el trabajo.</p>
+        </div>
+        <div>
+          <div class="project-tech"><span class="tag">Selenium</span><span class="tag">Telegram API</span><span class="tag">Python</span><span class="tag">Task Scheduler</span></div>
+          <button class="btn-card" onclick="document.getElementById('modal-p8').showModal()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver caso completo</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<dialog id="modal-p1" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-cloud" style="color:var(--accent);margin-right:8px"></i>Automatización de pagos — Acuerdo Federal de Deuda</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p1').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">Rentas Córdoba gestiona la deuda de municipios adheridos al Acuerdo Federal y distribuye los cobros a los entes acreedores. Ese reporte mensual se hacía a mano, sin trazabilidad, dependiendo de una sola persona y con riesgo de envíos duplicados.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Notebook en Azure Databricks con query SQL que detecta solo los pagos nuevos (anti-join contra tabla de control), genera el Excel con el detalle por municipio y acreedor, y lo envía automáticamente por email a cada organismo. Los registros enviados quedan guardados para evitar reenvíos.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">El proceso pasó de manual a completamente automático. Sin duplicados, con trazabilidad completa y los datos disponibles el mismo día del cierre para EPEC, Ministerio de Educación y demás organismos acreedores.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="code-ide">
+        <div class="ide-header">
+          <div class="ide-dots"><span class="ide-dot" style="background:#ef4444"></span><span class="ide-dot" style="background:#f5a623"></span><span class="ide-dot" style="background:#3ecf8e"></span></div>
+          <span>incremental_copa.py</span>
+        </div>
+        <pre class="ide-body"><span class="c-cm"># Anti-join: excluye registros ya enviados</span>
+df_nuevos = df_raw.join(
+    df_control, <span class="c-st">"PAG_BOLETA_ID"</span>, <span class="c-st">"left_anti"</span>
+)
+
+<span class="c-kw">if</span> df_nuevos.count() > 0:
+    df_pandas.to_excel(file_path, index=<span class="c-kw">False</span>)
+    server.send_message(msg)
+
+    <span class="c-cm"># Registra IDs — evita reenvíos futuros</span>
+    df_control_update.write \
+        .mode(<span class="c-st">"append"</span>) \
+        .saveAsTable(<span class="c-st">"control_envios_copa"</span>)
+<span class="c-kw">else</span>:
+    <span class="c-fn">print</span>(<span class="c-st">"Sin registros nuevos. No se envía."</span>)</pre>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p2" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);margin-right:8px"></i>Dashboard de control — Convenio de deuda municipal</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p2').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">La Dirección no tenía visibilidad unificada sobre la deuda encomendada: cuánto se cobró, qué se distribuyó, y quiénes estaban en mora. Los datos vivían en consultas ad-hoc separadas.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Tablero en Power BI con modelo estrella: deuda original por tipo de tributo, pagos acreditados, cobrabilidad por período y distribución al municipio. Con alertas por desvíos integradas.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Herramienta de uso diario por Dirección. Redujo las consultas ad-hoc al equipo técnico y permitió detectar brechas de cobrabilidad antes de que se volvieran un problema.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="mock-dashboard">
+        <div class="mock-header">
+          <span class="mock-title"><i class="fa-solid fa-landmark"></i> &nbsp;Control Recaudatorio</span>
+          <span class="mock-badge">Power BI</span>
+        </div>
+        <div class="mock-kpi-grid">
+          <div class="mock-kpi-card"><span class="mock-kpi-label">Deuda total</span><div class="mock-kpi-val">$6,08B</div></div>
+          <div class="mock-kpi-card"><span class="mock-kpi-label">Recaudado</span><div class="mock-kpi-val" style="color:var(--ok)">$1.237M</div></div>
+          <div class="mock-kpi-card"><span class="mock-kpi-label">Cobrabilidad</span><div class="mock-kpi-val" style="color:var(--warn)">20,34%</div></div>
+        </div>
+        <div class="mock-chart-container">
+          <p class="mock-chart-title">Pagos acreditados por mes</p>
+          <div class="mock-bars">
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:4%;background:linear-gradient(to top,#6272a4,#8be9fd)" data-val="$17,7M"></div><span class="mock-bar-label">Sep</span></div>
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:22%;background:linear-gradient(to top,#6272a4,#8be9fd)" data-val="$91M"></div><span class="mock-bar-label">Oct</span></div>
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:100%;background:linear-gradient(to top,var(--accent2),var(--accent))" data-val="$417M"></div><span class="mock-bar-label">Nov</span></div>
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:30%;background:linear-gradient(to top,#6272a4,#8be9fd)" data-val="$125M"></div><span class="mock-bar-label">Dic</span></div>
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:36%;background:linear-gradient(to top,#6272a4,#8be9fd)" data-val="$151M"></div><span class="mock-bar-label">Ene</span></div>
+            <div class="mock-bar-wrapper"><div class="mock-bar" style="height:49%;background:linear-gradient(to top,#5a6abf,#7eb8f7)" data-val="$206M"></div><span class="mock-bar-label">Feb</span></div>
+          </div>
+        </div>
+        <div class="mock-table-container">
+          <table class="mock-table">
+            <thead><tr><th>Tipo tributo</th><th class="t-num">Pagado</th><th class="t-num">Cobrabilidad</th></tr></thead>
+            <tbody>
+              <tr><td>Inmobiliario</td><td class="t-num">$689M</td><td class="t-num" style="color:var(--ok)">20,67%</td></tr>
+              <tr><td>Automotor</td><td class="t-num">$441M</td><td class="t-num" style="color:var(--ok)">20,93%</td></tr>
+              <tr><td>Comercio</td><td class="t-num">$107M</td><td class="t-num" style="color:var(--warn)">16,72%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p3" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-landmark" style="color:var(--accent);margin-right:8px"></i>Monitor — Acuerdo Federal de Coparticipación</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p3').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">Con 170+ municipios adheridos no había forma de ver de un vistazo qué entidades estaban al día, cuánto se distribuyó y cuánto quedaba pendiente en cada plan de pagos.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Dashboard con trazabilidad completa: deuda original, amortización CER por cuota, número de cuota activa, monto distribuido y saldo pendiente. Lógica DAX con validaciones cruzadas de consistencia.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Monitoreo en tiempo real de una cartera de $108M+ distribuida entre más de 170 entidades. Fuente única de verdad para auditoría y alertas tempranas por desvíos.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="af-dashboard">
+        <div class="af-banner">
+          <span class="af-banner-title"><i class="fa-solid fa-building-columns"></i> &nbsp;Acuerdo Federal — Consolidado</span>
+          <span class="tag" style="border-color:#334155;color:#94a3b8">174 entidades</span>
+        </div>
+        <div class="af-kpis">
+          <div class="af-kpi"><p class="af-kpi-lbl">Total cartera</p><p class="af-kpi-val">$108,17M</p></div>
+          <div class="af-kpi"><p class="af-kpi-lbl">Cancelado</p><p class="af-kpi-val alt">$31,54M</p></div>
+          <div class="af-kpi"><p class="af-kpi-lbl">Pendiente</p><p class="af-kpi-val" style="color:#ef4444">$76,63M</p></div>
+          <div class="af-kpi"><p class="af-kpi-lbl">Adheridas</p><p class="af-kpi-val alt">174</p></div>
+        </div>
+        <div class="af-body-grid">
+          <div class="af-box">
+            <p class="af-box-title">Deuda por sector (Top 5)</p>
+            <div class="af-hbar-row"><span class="af-hbar-lbl">Norte</span><div class="af-hbar-track"><div class="af-hbar-fill" style="width:100%"></div></div><span class="af-hbar-val">$24,1M</span></div>
+            <div class="af-hbar-row"><span class="af-hbar-lbl">Sur</span><div class="af-hbar-track"><div class="af-hbar-fill" style="width:78%"></div></div><span class="af-hbar-val">$18,8M</span></div>
+            <div class="af-hbar-row"><span class="af-hbar-lbl">Centro</span><div class="af-hbar-track"><div class="af-hbar-fill" style="width:55%"></div></div><span class="af-hbar-val">$13,2M</span></div>
+            <div class="af-hbar-row"><span class="af-hbar-lbl">Eje Ind.</span><div class="af-hbar-track"><div class="af-hbar-fill" style="width:42%"></div></div><span class="af-hbar-val">$10,1M</span></div>
+            <div class="af-hbar-row"><span class="af-hbar-lbl">Otras</span><div class="af-hbar-track"><div class="af-hbar-fill" style="width:28%"></div></div><span class="af-hbar-val">$6,7M</span></div>
+          </div>
+          <div class="af-box">
+            <p class="af-box-title">Cuotas amortizadas por trimestre</p>
+            <div class="af-trend-lines">
+              <div class="af-trend-dot-wrap"><div class="af-trend-line-bar" style="height:35%"></div><span class="af-trend-lbl">T1</span></div>
+              <div class="af-trend-dot-wrap"><div class="af-trend-line-bar" style="height:50%"></div><span class="af-trend-lbl">T2</span></div>
+              <div class="af-trend-dot-wrap"><div class="af-trend-line-bar" style="height:45%"></div><span class="af-trend-lbl">T3</span></div>
+              <div class="af-trend-dot-wrap"><div class="af-trend-line-bar" style="height:70%"></div><span class="af-trend-lbl">T4</span></div>
+              <div class="af-trend-dot-wrap"><div class="af-trend-line-bar" style="height:90%"></div><span class="af-trend-lbl">T1 act.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p4" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-brands fa-microsoft" style="color:var(--accent);margin-right:8px"></i>Dashboard de SLAs — Dynamics 365 + Dataverse</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p4').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">La migración de Planner a Dynamics 365 rompió la comparabilidad histórica de KPIs. Los modelos de datos cambiaron y no había fuente única de verdad para mandos medios y dirección.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Modelo analítico unificado en Power BI bajo esquema estrella, integrando el histórico de Planner con la operación actual desde Dataverse. Métricas DAX con reglas de negocio para garantizar comparabilidad.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Se detectó que el cumplimiento real de SLAs era del 62% contra una meta del 90% — brecha invisible antes del tablero — lo que derivó en ajustes de proceso y reasignación de prioridades en el equipo.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="crm-dashboard">
+        <div class="crm-topbar">
+          <div class="crm-header-txt">
+            <h4><i class="fa-solid fa-gauge-high"></i> &nbsp;Cuadro de Mando Operativo</h4>
+            <p>Dataverse · Dynamics 365 · Monitor SLAs</p>
+          </div>
+          <span class="crm-badge">Activo</span>
+        </div>
+        <div class="crm-cards">
+          <div class="crm-card"><p class="crm-card-lbl">Casos registrados</p><p class="crm-card-val">24.512</p></div>
+          <div class="crm-card fail"><p class="crm-card-lbl">Cumplimiento SLA</p><p class="crm-card-val" style="color:#ef4444">62%</p></div>
+          <div class="crm-card"><p class="crm-card-lbl">Tiempo resolución</p><p class="crm-card-val" style="color:#f5a623">4,2 días</p></div>
+        </div>
+        <div class="crm-grid">
+          <div class="crm-panel">
+            <p class="crm-panel-title">Canal de entrada</p>
+            <div class="crm-vbar-container">
+              <div class="crm-vbar-wrapper"><div class="crm-vbar" style="height:85%"><span class="crm-vbar-inner-lbl">43%</span></div><span class="crm-vbar-lbl">Web</span></div>
+              <div class="crm-vbar-wrapper"><div class="crm-vbar" style="height:55%"><span class="crm-vbar-inner-lbl">26%</span></div><span class="crm-vbar-lbl">Bot</span></div>
+              <div class="crm-vbar-wrapper"><div class="crm-vbar" style="height:38%"><span class="crm-vbar-inner-lbl">18%</span></div><span class="crm-vbar-lbl">Email</span></div>
+              <div class="crm-vbar-wrapper"><div class="crm-vbar" style="height:25%"><span class="crm-vbar-inner-lbl">13%</span></div><span class="crm-vbar-lbl">Pres.</span></div>
+            </div>
+          </div>
+          <div class="crm-panel">
+            <p class="crm-panel-title">Estado de reclamos</p>
+            <div class="crm-list-item"><span class="crm-list-name">Pendientes</span><span class="crm-list-count">11.412</span></div>
+            <div class="crm-list-item"><span class="crm-list-name">En análisis</span><span class="crm-list-count">8.104</span></div>
+            <div class="crm-list-item"><span class="crm-list-name">Escalados</span><span class="crm-list-count">3.120</span></div>
+            <div class="crm-list-item"><span class="crm-list-name">Fuera de término</span><span class="crm-list-count" style="color:#ef4444">1.876</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p5" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-file-lines" style="color:var(--accent);margin-right:8px"></i>Informe oficial MUC — Ministerio de Economía</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p5').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">El Ministerio publicaba datos de monotributo a nivel provincial sin desagregación por localidad ni seguimiento de cobrabilidad. No existía una estructura reproducible con criterios validados.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Diseño y mantenimiento mensual del dataset oficial: monotributistas totales y exigibles por localidad, cobrabilidad, adhesión al MUC y variaciones interanuales. Metodología documentada y acordada con el Ministerio.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Serie histórica 2018–2024 publicada en el sitio oficial del Ministerio, usada por municipios y comunas de toda la Provincia para planificación presupuestaria. <a href="https://economiaygestionpublica.cba.gov.ar/publicacion/monotributo-unificado/" target="_blank" style="color:var(--accent)">Ver publicación oficial →</a></p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="code-ide">
+        <div class="ide-header">
+          <div class="ide-dots"><span class="ide-dot" style="background:#ef4444"></span><span class="ide-dot" style="background:#f5a623"></span><span class="ide-dot" style="background:#3ecf8e"></span></div>
+          <span>muc_aggregation.sql</span>
+        </div>
+        <pre class="ide-body"><span class="c-kw">SELECT</span>
+    localidad_codigo,
+    localidad_nombre,
+    anio_calendario,
+    <span class="c-fn">COUNT</span>(<span class="c-kw">DISTINCT</span> contribuyente_id)
+        <span class="c-kw">AS</span> padron_total,
+    <span class="c-fn">COUNT</span>(<span class="c-kw">DISTINCT</span> <span class="c-kw">CASE</span>
+        <span class="c-kw">WHEN</span> tiene_obligacion_iibb = 1
+        <span class="c-kw">THEN</span> contribuyente_id <span class="c-kw">END</span>)
+        <span class="c-kw">AS</span> padron_exigible,
+    <span class="c-fn">ROUND</span>(cobrado/<span class="c-fn">NULLIF</span>(emitido,0)*100,2)
+        <span class="c-kw">AS</span> cobrabilidad_pct
+<span class="c-kw">FROM</span> db_tributaria.monotributo_unificado
+<span class="c-kw">GROUP BY</span> 1,2,3
+<span class="c-kw">ORDER BY</span> anio_calendario <span class="c-kw">DESC</span>;</pre>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p6" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-brain" style="color:var(--accent);margin-right:8px"></i>Modelo predictivo de leads — UNC 2024</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p6').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">¿Cómo priorizar leads con mayor probabilidad de convertir sin atacar toda la base con el mismo esfuerzo? El equipo comercial no tenía scoring previo.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Pipeline en Python: limpieza, feature engineering, balanceo de clases con SMOTE y Random Forest ajustado. Output: scoring por decil de propensión a convertir.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Métricas superiores al baseline. Análisis de importancia de variables para orientar la estrategia comercial hacia los atributos más predictivos.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="code-ide">
+        <div class="ide-header">
+          <div class="ide-dots"><span class="ide-dot" style="background:#ef4444"></span><span class="ide-dot" style="background:#f5a623"></span><span class="ide-dot" style="background:#3ecf8e"></span></div>
+          <span>model_training.py</span>
+        </div>
+        <pre class="ide-body"><span class="c-kw">from</span> sklearn.ensemble <span class="c-kw">import</span> RandomForestClassifier
+<span class="c-kw">from</span> imblearn.over_sampling <span class="c-kw">import</span> SMOTE
+
+<span class="c-cm"># Balanceo de clases antes de entrenar</span>
+X_res, y_res = SMOTE().fit_resample(X, y)
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(X_res, y_res, test_size=<span class="c-st">0.2</span>)
+
+model = RandomForestClassifier(
+    n_estimators=<span class="c-st">100</span>,
+    max_depth=<span class="c-st">8</span>,
+    class_weight=<span class="c-st">"balanced"</span>
+)
+model.fit(X_train, y_train)</pre>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p7" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-solid fa-robot" style="color:var(--accent);margin-right:8px"></i>Clasificación de reseñas con IA generativa</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p7').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">Analizar manualmente miles de reseñas para detectar alertas críticas (higiene, facturación, atención) es inviable a escala.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Llamadas estructuradas a la API de Groq (Llama 3.1) con prompts de clasificación: sentimiento, temas por dimensión (comida, servicio, higiene, precio), alertas críticas y ticket perceptual, todo en JSON. ~2.900 registros cargados en BigQuery y visualizados en Looker Studio.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Ciclo completo: prompt engineering → carga en nube → dashboard ejecutivo. Patrón replicable para análisis de feedback en cualquier industria.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div class="ga-dashboard">
+        <div class="ga-header">
+          <div class="ga-brand">
+            <div class="ga-icon"><i class="fa-solid fa-utensils"></i></div>
+            <div><h4 class="ga-title">Gastro Auditoría BI</h4><p class="ga-subtitle">Groq Llama 3.1 → BigQuery → Looker Studio</p></div>
+          </div>
+          <div class="ga-refresh"><i class="fa-solid fa-arrows-rotate"></i> 2.900 reseñas</div>
+        </div>
+        <div class="ga-cards-grid">
+          <div class="ga-card c-high"><div><p class="ga-card-lbl">Alertas críticas</p><span class="ga-card-num">14</span></div><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i></div>
+          <div class="ga-card c-med"><div><p class="ga-card-lbl">Riesgo medio</p><span class="ga-card-num">32</span></div><i class="fa-solid fa-circle-exclamation" style="color:#f5a623"></i></div>
+          <div class="ga-card c-low"><div><p class="ga-card-lbl">Sin alertas</p><span class="ga-card-num">89</span></div><i class="fa-solid fa-circle-check" style="color:#10b981"></i></div>
+        </div>
+        <div class="ga-table-box">
+          <table class="ga-table">
+            <thead><tr><th>ID</th><th>Local</th><th>Severidad</th><th>Categoría IA</th><th>Reseña</th></tr></thead>
+            <tbody>
+              <tr><td style="color:#6b7594;font-family:var(--mono)">0204</td><td style="font-weight:600;color:#fff">Gastro Center</td><td><span class="badge-high">Alta</span></td><td class="ga-mono-lbl high">intoxicacion_higiene</td><td class="ga-text-muted">Elemento extraño en la sopa. Dudas sobre higiene de cocina.</td></tr>
+              <tr><td style="color:#6b7594;font-family:var(--mono)">0205</td><td style="font-weight:600;color:#fff">Paradise Diner</td><td><span class="badge-med">Media</span></td><td class="ga-mono-lbl">mala_atencion</td><td class="ga-text-muted">45 min de espera y respuesta poco profesional del personal.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal-p8" class="dashboard-modal">
+  <div class="modal-header">
+    <h3><i class="fa-brands fa-python" style="color:var(--accent);margin-right:8px"></i>Bot de búsqueda laboral — Python + Telegram</h3>
+    <button class="btn-close" onclick="document.getElementById('modal-p8').close()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="psi">
+      <div class="psi-row"><span class="psi-label p">Problema</span><p class="psi-text">Revisar varios portales de empleo todos los días consume tiempo, genera duplicados y el filtrado es subjetivo e inconsistente.</p></div>
+      <div class="psi-row"><span class="psi-label s">Solución</span><p class="psi-text">Script con Selenium que scrapea portales ATS, aplica matching por keywords y exclusiones, y manda un resumen diario a Telegram. Corre automático con Task Scheduler, sin intervención manual.</p></div>
+      <div class="psi-row"><span class="psi-label i">Impacto</span><p class="psi-text">Alertas diarias con oportunidades filtradas. Un problema real propio resuelto con las mismas herramientas que uso en el trabajo — la mejor forma de mostrar que la automatización no es solo teoría.</p></div>
+    </div>
+    <div class="modal-visual">
+      <div style="background:#17212b;border-radius:10px;overflow:hidden;border:1px solid #2b5278;font-family:var(--sans)">
+        <!-- Telegram header -->
+        <div style="background:#2b5278;padding:10px 14px;display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:50%;background:#2f80ed;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0">in</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#fff">Empleos</div>
+            <div style="font-size:11px;color:#8ab4d8">bot</div>
+          </div>
+        </div>
+        <!-- Messages -->
+        <div style="padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="background:#2b5278;border-radius:4px 12px 12px 12px;padding:10px 12px;max-width:90%">
+            <div style="font-size:10px;color:#8ab4d8;font-family:var(--mono);margin-bottom:6px;display:flex;align-items:center;gap:5px">
+              <span>⚙️</span><span style="font-weight:700;letter-spacing:.05em">JOB HUNTER AUTOMATION</span>
+            </div>
+            <div style="font-size:11px;color:#8ab4d8;margin-bottom:8px;display:flex;align-items:center;gap:5px">
+              <span>🕐</span> 18/05/2026 · 11:00 AM
+            </div>
+            <div style="font-size:11px;color:#a8c7e8;margin-bottom:10px;display:flex;align-items:center;gap:5px">
+              <span>📊</span> 6 oportunidades relevantes encontradas
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Despegar · BI Analyst</div>
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Despegar · Sr Planning BI Analyst</div>
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Coca-Cola Andina · Analista Tesorería</div>
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Claro · Analista soporte Billetera</div>
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Modo · Sr Data Analyst</div>
+              <div style="background:rgba(255,255,255,.06);border-left:3px solid #2f80ed;border-radius:0 4px 4px 0;padding:7px 10px;font-size:12px;color:#e8f4ff">Siglo 21 · Analista de producto</div>
+            </div>
+            <div style="font-size:10px;color:#5c8aad;text-align:right;margin-top:6px">11:00 ✓✓</div>
+          </div>
+          <div style="font-size:10px;color:#4a6f8a;text-align:center;font-family:var(--mono)">— corre todos los días a las 11:00 AM —</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<section id="sobre-mi">
+  <div class="wrap">
+    <p class="section-eyebrow">Sobre mí</p>
+    <p class="section-title">Perfil</p>
+    <div class="about-grid">
+      <div class="about-block">
+        <div class="about-block-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <h4>Formación</h4>
+        <p>Contador Público (UNC, 2019) y Diplomatura en Ciencia de Datos, IA y Negocios (FAMAF + FCE · UNC, 2024). Entiendo los números desde el balance y desde el pipeline.</p>
+      </div>
+      <div class="about-block">
+        <div class="about-block-icon"><i class="fa-solid fa-briefcase"></i></div>
+        <h4>Experiencia</h4>
+        <p>Más de 4 años trabajando con datos en entornos de alta demanda: BI, automatización de reportes, gobierno de datos y gestión de producto digital aplicados a procesos financieros y operativos complejos.</p>
+      </div>
+      <div class="about-block">
+        <div class="about-block-icon"><i class="fa-solid fa-bridge"></i></div>
+        <h4>Lo que me define</h4>
+        <p>Me gusta entender el problema antes de abrir el editor. Cuando tengo claro qué necesita el negocio, el análisis fluye solo — y el resultado es algo que la gente realmente usa, no un dashboard más que nadie mira.</p>
+      </div>
+      <div class="about-block">
+        <div class="about-block-icon"><i class="fa-solid fa-globe"></i></div>
+        <h4>Idiomas y metodología</h4>
+        <p>Español nativo · Inglés B2. Trabajo con Jira, metodologías ágiles y uso LLMs como parte del flujo diario — no como novedad, sino como herramienta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="contact-links">
+      <a href="mailto:grenonramiro@gmail.com"><i class="fa-solid fa-envelope"></i> grenonramiro@gmail.com</a>
+      <a href="https://linkedin.com/in/ramirogrenon" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/ramigren" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="tel:+5493515226040"><i class="fa-solid fa-phone"></i> +54 9 351 522-6040</a>
+    </div>
+    <p>Ramiro Grenon · Córdoba, Argentina</p>
+  </div>
+</footer>
+
+</body>
+</html>
